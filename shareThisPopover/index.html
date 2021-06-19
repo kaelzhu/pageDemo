@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Share this popover</title>
+	<link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+	<section>
+		<h1>Lorem title</h1>
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit.
+			Temporibus veritatis eum doloribus non harum voluptas iusto
+			lodio repellendus esse, ipsum molestiae autem debitis est provident
+			dolore labore quis id? Debitis.
+		</p>
+		<h1>Lorem title</h1>
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit.
+			Temporibus veritatis eum doloribus non harum voluptas iusto
+			lodio repellendus esse, ipsum molestiae autem debitis est provident
+			dolore labore quis id? Debitis.
+		</p>
+	</section>
+	<script src="./utils.js"></script>
+	<script src="./shareThisPopover.js"></script>
+	<script>
+		const container = new Container(document.querySelector('section'))
+		const shareThis = new ShareThis({
+			container, 
+			className: 'share-this-popover',
+			text: 'S'
+		})
+
+		document.addEventListener('mousedown', event => {
+			shareThis.remove()
+			window.getSelection().empty()
+
+			if (!container.hasChild(event.target)) return
+
+			let move = debounce(function () {
+			}, 100)
+
+			let up = event => {
+				let s = window.getSelection()
+				if (s.toString() !== '') {
+					let r = s.getRangeAt(0)
+					shareThis.generatePopover(event.target, r)
+				} else {
+					shareThis.remove()
+				}
+
+
+				document.removeEventListener('mousemove', move)
+				document.removeEventListener('mouseup', up)
+			}
+
+			document.addEventListener('mousemove', move)
+			document.addEventListener('mouseup', up)
+		})
+
+	</script>
+</body>
+
+</html>
